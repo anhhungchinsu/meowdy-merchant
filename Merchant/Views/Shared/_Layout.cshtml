@@ -1,0 +1,337 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
+    <link rel="stylesheet" type="text/css" href="~/Content/fontawesome-free/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="~/Content/css/style.css">
+</head>
+<body>
+    <!-- navbar -->
+    <div class="navbar-cus">
+        <!-- nav left -->
+        <ul class="navbar-nav-cus">
+            <li class="nav-item-cus">
+                <a class="nav-link">
+                    <i class="fas fa-bars" onclick="collapseSidebar()"></i>
+                </a>
+            </li>
+            <li class="nav-item-cus">
+                <img src="~/assets/logo.svg" alt="ATPro logo" class="logo logo-light">
+                <img src="~/assets/logo.svg" alt="ATPro logo" class="logo logo-dark">
+            </li>
+        </ul>
+        <!-- end nav left -->
+        <!-- form -->
+        <form class="navbar-search">
+            <input type="text" name="Search" class="navbar-search-input" placeholder="What you looking for...">
+            <i class="fas fa-search"></i>
+        </form>
+        <!-- end form -->
+        <h5>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <span>Have a nice day, </span>@User.Identity.Name;
+            }
+        </h5>
+        <!-- nav right -->
+        <ul class="navbar-nav-cus nav-right">
+            <li class="nav-item-cus mode">
+                <a class="nav-link" href="#" onclick="switchTheme()">
+                    <i class="fas fa-moon dark-icon"></i>
+                    <i class="fas fa-sun light-icon"></i>
+                </a>
+            </li>
+            <li class="nav-item-cus dropdown">
+                <a class="nav-link" id="label-notification">
+                    <i class="fas fa-bell dropdown-toggle" data-toggle="notification-menu"></i>
+                    <span class="navbar-badge" id="badge-notification">NEW</span>
+                </a>
+                <ul id="notification-menu" class="dropdown-menu-cus notification-menu">
+                    <div class="dropdown-menu-header">
+                        <span>
+                            Thông báo
+                        </span>
+                    </div>
+                    <div class="dropdown-menu-content overlay-scrollbar scrollbar-hover" id="list-notification">
+                    </div>
+                    <div class="dropdown-menu-footer">
+                        <span>
+                            Xem tất cả thông báo
+                        </span>
+                    </div>
+                </ul>
+            </li>
+            <li class="nav-item-cus avt-wrapper">
+                <div class="avt dropdown">
+                    <img src="~/assets/@Session["userImg"]" alt="User image" class="dropdown-toggle" data-toggle="user-menu">
+                    <ul id="user-menu" class="dropdown-menu-cus">
+                        <li class="dropdown-menu-item">
+                            <a href="@Url.Action("Edit", "Users", new {id = Session["userId"] })" class="dropdown-menu-link">
+                                <div>
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <span>Thông tin cá nhân</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-menu-item">
+                            <a href="#" class="dropdown-menu-link">
+                                <div>
+                                    <i class="fas fa-cog"></i>
+                                </div>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-menu-item">
+                            <a href="#" class="dropdown-menu-link">
+                                <div>
+                                    <i class="far fa-credit-card"></i>
+                                </div>
+                                <span>Payments</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-menu-item">
+                            <a href="#" class="dropdown-menu-link">
+                                <div>
+                                    <i class="fas fa-spinner"></i>
+                                </div>
+                                <span>Projects</span>
+                            </a>
+                        </li>
+                        <li class="dropdown-menu-item">
+                            <a href="@Url.Action("SignOut", "Login")" class="dropdown-menu-link">
+                                <div>
+                                    <i class="fas fa-sign-out-alt"></i>
+                                </div>
+                                <span>Đăng xuất</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <!-- end nav right -->
+    </div>
+    <!-- end navbar -->
+    <!-- sidebar -->
+    <div class="sidebar">
+        <ul class="sidebar-nav">
+            <li class="sidebar-nav-item">
+                <a data-tab="#home" href="@Url.Action("Index", "Home")" class="sidebar-nav-link">
+                    <div>
+                        <i class="fab fa-accusoft"></i>
+                    </div>
+                    <span>Trang chủ</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a data-tab="#link1" href="@Url.Action("Index", "Order")" class="sidebar-nav-link">
+                    <div>
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <span>Đơn đặt hàng</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a data-tab="#link2" href="@Url.Action("Edit", "Restaurants")" class="sidebar-nav-link">
+                    <div>
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <span>Quản lí nhà hàng</span>
+                </a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a data-tab="#link3" href="@Url.Action("Index", "Menus")" class="sidebar-nav-link">
+                    <div>
+                        <i class="fas fa-address-book"></i>
+                    </div>
+                    <span>
+                        Quản lí menu
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- end sidebar -->
+    <!-- main content -->
+    <div class="wrapper">
+        @RenderBody()
+    </div>
+
+    <!-- end main content -->
+    <!-- import script -->
+    <!-- end import script -->
+
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>
+    <script src="~/signalr/hubs" type="text/javascript"></script>
+    <script src="~/Scripts/js/index.js"></script>
+
+    <script type="text/javascript">
+        var order
+        $(document).ready(function () {
+            order = order || $.connection.orderHub
+
+            order.client.displayOrder = function () {
+                getData()
+            }
+            $.connection.hub.start()
+            getData()
+        })
+
+        $('#label-notification').on('click', () => {
+            $("#badge-notification").attr("hidden", true)
+        })
+
+        function getData() {
+            $.ajax({
+                url: '@Url.Action("Get", "Order")',
+                type: 'GET',
+                contentType: 'application/json;charset=utf-8',
+                success: function (data) {
+                    $("#badge-notification").attr("hidden", false)
+                    const ListOrder = JSON.parse(data.ListOrder)
+                    const ListPending = JSON.parse(data.ListPending)
+                    const ListConfirmed = JSON.parse(data.ListConfirmed)
+                    const ListShipping = JSON.parse(data.ListShipping)
+                    const ListCompleted = JSON.parse(data.ListCompleted)
+                    const ListCanceled = JSON.parse(data.ListCanceled)
+
+                    getAllData(ListOrder)
+                    getPendingData(ListPending)
+                    getConfirmedData(ListConfirmed)
+                    getShippingData(ListShipping)
+                    getCompletedData(ListCompleted)
+                    getCanceledData(ListCanceled)
+                }
+            })
+        }
+
+        function getAllData(rs) {
+            let tbl = $('#list-notification')
+            tbl.empty()
+            for (let item of rs) {
+                tbl.append(
+                    '<li class="dropdown-menu-item">' +
+                    '<a href="#" class="dropdown-menu-link">' +
+                    '<div>' +
+                    '<i class="fas fa-tasks"></i>' +
+                    '</div>' +
+                    '<span>' +
+                    'Đơn số ' + item.order_id + ' ở trạng thái ' + item.order_status +
+                    '<br>' +
+                    '<span>' +
+                    item.order_created_date +
+                    '</span>' +
+                    '</span>' +
+                    '</a>' +
+                    '</li>'
+                )
+            }
+        }
+
+        function getPendingData(rs) {
+            let tblOrder = $('#tblOrderPending')
+            tblOrder.empty()
+            for (let item of rs) {
+                tblOrder.append(
+                    '<tr>' +
+                    '<td>'+item.order_id+'</td>' +
+                    '<td>' +
+                    '<span class="badge badge-warning">' +
+                    item.order_status +
+                    '</span>' +
+                    '</td>' +
+                    '<td>' + item.order_created_date + '</td>' +
+                    '<td><button data-id="' + item.order_id + '" class="btn btn-deeppink open-AddBookDialog" data-toggle="modal" data-target="#exampleModalCenter">Xem chi tiết</button></td>' +
+                    '</tr>'
+                )
+            }
+        }
+
+        function getConfirmedData(rs) {
+            let tblOrder = $('#tblOrderConfirmed')
+            tblOrder.empty()
+            for (let item of rs) {
+                tblOrder.append(
+                    '<tr>' +
+                    '<td>'+item.order_id+'</td>' +
+                    '<td>' +
+                    '<span class="badge badge-primary">' +
+                    item.order_status +
+                    '</span>' +
+                    '</td>' +
+                    '<td>' + item.order_created_date + '</td>' +
+                    '<td><button data-id="' + item.order_id + '" class="btn btn-deeppink open-AddBookDialog" data-toggle="modal" data-target="#exampleModalCenter">Xem chi tiết</button></td>' +
+                    '</tr>'
+                )
+            }
+        }
+
+        function getShippingData(rs) {
+            let tblOrder = $('#tblOrderShipping')
+            tblOrder.empty()
+            for (let item of rs) {
+                tblOrder.append(
+                    '<tr>' +
+                    '<td>'+item.order_id+'</td>' +
+                    '<td>' +
+                    '<span class="badge badge-info">' +
+                    item.order_status +
+                    '</span>' +
+                    '</td>' +
+                    '<td>' + item.order_created_date + '</td>' +
+                    '<td><button data-id="' + item.order_id + '" class="btn btn-deeppink open-AddBookDialog" data-toggle="modal" data-target="#exampleModalCenter">Xem chi tiết</button></td>' +
+                    '</tr>'
+                )
+            }
+        }
+
+        function getCompletedData(rs) {
+            let tblOrder = $('#tblOrderCompleted')
+            tblOrder.empty()
+            for (let item of rs) {
+                tblOrder.append(
+                    '<tr>' +
+                    '<td>'+item.order_id+'</td>' +
+                    '<td>' +
+                    '<span class="badge badge-success">' +
+                    item.order_status +
+                    '</span>' +
+                    '</td>' +
+                    '<td>' + item.order_created_date + '</td>' +
+                    '<td><button data-id="' + item.order_id + '" class="btn btn-deeppink open-AddBookDialog" data-toggle="modal" data-target="#exampleModalCenter">Xem chi tiết</button></td>' +
+                    '</tr>'
+                )
+            }
+        }
+
+        function getCanceledData(rs) {
+            let tblOrder = $('#tblOrderCanceled')
+            tblOrder.empty()
+            for (let item of rs) {
+                tblOrder.append(
+                    '<tr>' +
+                    '<td>' + item.order_id + '</td>' +
+                    '<td>' +
+                    '<span class="badge badge-danger">' +
+                    item.order_status +
+                    '</span>' +
+                    '</td>' +
+                    '<td>' + item.order_created_date + '</td>' +
+                    //'<td><button data-id="' + item.order_id + '" class="btn btn-deeppink open-AddBookDialog" data-toggle="modal" data-target="#exampleModalCenter">Xem chi tiết</button></td>' +
+                    '</tr>'
+                )
+            }
+        }
+    </script>
+    @RenderSection("scripts", required: false)
+
+</body>
+</html>

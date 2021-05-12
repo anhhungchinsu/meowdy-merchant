@@ -1,0 +1,260 @@
+﻿<link rel="stylesheet" type="text/css" href="~/Content/css/orderModel.css">
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row justify-content-center">
+    <div class="card col-5 ml-3">
+        <div class="card-header">
+            <h3>
+                <strong class="text-primary">ĐƠN ĐANG CHỜ XÁC NHẬN</strong>
+            </h3>
+            <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <div class="card-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày đặt</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="tbl-order" id="tblOrderPending">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card col-5 ml-3">
+        <div class="card-header">
+            <h3>
+                <strong class="text-primary">ĐƠN ĐÃ XÁC NHẬN</strong>
+            </h3>
+            <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <div class="card-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày đặt</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="tbl-order" id="tblOrderConfirmed">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="card col-5 ml-3">
+        <div class="card-header">
+            <h3>
+                <strong class="text-primary">ĐƠN ĐANG VẬN CHUYỂN</strong>
+            </h3>
+            <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <div class="card-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày đặt</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="tbl-order" id="tblOrderShipping">
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card col-5 ml-3">
+        <div class="card-header">
+            <h3>
+                <strong class="text-primary">ĐƠN HOÀN THÀNH</strong>
+            </h3>
+            <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <div class="card-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày đặt</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="tbl-order" id="tblOrderCompleted">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    <div class="card col-5 ml-3">
+        <div class="card-header">
+            <h3>
+                <strong class="text-primary">ĐƠN ĐÃ HỦY</strong>
+            </h3>
+            <i class="fas fa-ellipsis-h"></i>
+        </div>
+        <div class="card-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Trạng thái</th>
+                        <th>Ngày đặt</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="tbl-order" id="tblOrderCanceled">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Chi tiết đơn</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <article class="card">
+                    <header class="card-header"><strong>Mã đơn: </strong><span id="order-id-header"></span> </header>
+                    <div class="card-body">
+                        <h6><strong>Khách hàng: </strong><span id="order-customer-name"></span></h6>
+                        <h6><strong>Ghi chú: </strong><span id="order-note"></span></h6>
+                        <article class="card">
+                            <div class="card-body row">
+                                <div class="col"> <strong>Ngày tạo đơn:</strong> <br><span id="order-date"></span> </div>
+                                <div class="col"> <strong>Số điện thoại khách:</strong><br /> <span id="order-customer-phone"></span> </div>
+                                <div class="col"> <strong>Thanh toán:</strong> <br> <span id="order-discount"></span> </div>
+                                <div class="col"> <strong>Vận chuyển:</strong> <br> None </div>
+                            </div>
+                        </article>
+                        <div class="track">
+                            <div class="step step-confirmed"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Xác nhận đơn hàng</span> </div>
+                            <div class="step step-delivery"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Đang vận chuyển </span> </div>
+                            <div class="step step-complete"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Khách đã nhận</span> </div>
+                        </div>
+                        <hr>
+                        <ul class="row" id="list-order-food">
+                            @*<li class="col-md-4">
+                                    <figure class="itemside mb-3">
+                                        <div class="aside"><img src="https://i.imgur.com/iDwDQ4o.png" class="img-sm border"></div>
+                                        <figcaption class="info align-self-center">
+                                            <p class="title">Dell Laptop with 500GB HDD <br> 8GB RAM</p> <span class="text-muted">$950 </span>
+                                        </figcaption>
+                                    </figure>
+                                </li>*@
+                        </ul>
+                        <div class="text-center text-capitalize">
+                            <hr> <button class="btn btn-success change-status" data-abc="true" data-status="Order confirmed">Xác nhận đơn</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+                <button type="button" class="btn btn-danger change-status" data-status="Order canceled">Hủy đơn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.tbl-order').on('click', '.open-AddBookDialog',function () {
+                const orderId = $(this).data('id')
+                $.ajax({
+                    url: '@Url.Action("getOrderById", "Order")',
+                    type: 'GET',
+                    data: { id: orderId},
+                    contentType: 'application/json;charset=utf-8',
+                    success: function (data) {
+                        const order = JSON.parse(data.Order)
+                        const listUser = JSON.parse(data.listUser)
+                        const listFood = JSON.parse(data.listFood)
+                        $('#exampleModalCenter').on('shown.bs.modal', function (e) {
+                            $('.step').removeClass('active')
+                            $('.change-status').removeClass('fade')
+                            if (order.order_status === "Order confirmed") {
+                                $('.step-confirmed').addClass('active')
+                                $('.change-status').addClass('fade')
+                            }
+                            if (order.order_status === "Shipping") {
+                                $('.step-confirmed').addClass('active')
+                                $('.step-delivery').addClass('active')
+                                $('.change-status').addClass('fade')
+                            }
+                            if (order.order_status === "Completed") {
+                                $('.step').addClass('active')
+                                $('.change-status').addClass('fade')
+                            }
+                            $('#order-id-header').text(order.order_id)
+                            $('#order-customer-name').text(listUser[0].user_name)
+                            $('#order-date').text(order.order_created_date)
+                            $('#order-customer-phone').text(listUser[0].user_phone)
+                            $('#order-note').text(order.order_note)
+                            $('#list-order-food.row').empty()
+                            for (var item of listFood) {
+                                $('#list-order-food').append(
+                                    '<li class="col-md-4">' +
+                                    '<figure class="itemside mb-3">' +
+                                    '<div class="aside"><img src="/assets/' + item.Food.food_image + '" class="img-sm border"></div>' +
+                                    '<figcaption class="info align-self-center">' +
+                                    '<p class="title"><strong>' + item.Food.food_name + '</strong> <br> ' + item.Food.food_price + ' VNĐ </p> <span class="text-muted">' + item.Quantity + ' cái </span>' +
+                                    '</figcaption>' +
+                                    '</figure>' +
+                                    '</li>'
+                                )
+                            }
+                        })
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            })
+
+            $('.change-status').on('click', function () {
+                const statusOrder = $(this).data('status')
+                let sendObject = {
+                    'id': $('#order-id-header').text(),
+                    'status': statusOrder
+                }
+                $.ajax({
+                    url: '@Url.Action("changeStatus", "Order")',
+                    type: 'POST',
+                    data: JSON.stringify(sendObject),
+                    contentType: 'application/json;charset=utf-8',
+                    success: function () {
+                        alert('Chốt đơn!!!')
+                        //location.reload()
+                        $('#exampleModalCenter').modal('hide')
+                    },
+                    error: function (e) {
+                        console.log(e);
+                    }
+                })
+            })
+        })
+    </script>
+}
+
+

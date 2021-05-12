@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Models.DBContext.Food>
+
+
+<div class="card-header d-flex justify-content-between">
+    <h3>
+        <strong class="text-primary">MÓN ĂN</strong>
+    </h3>
+    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addFoodModal">Thêm món ăn</a>
+</div>
+<div class="card-content">
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tên món</th>
+                <th>Giá</th>
+                <th>Số lượng</th>
+                <th>Hình ảnh</th>
+                <th>Đã bán</th>
+                <th>Ghi chú</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="listFood">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.food_id</td>
+                    <td>@item.food_name</td>
+                    <td>@item.food_price</td>
+                    <td>@item.food_quantity</td>
+                    <td><img class="img-fluid" src="/assets/@item.food_image"></td>
+                    <td>@item.food_served</td>
+                    <td>@item.food_note</td>
+                    <td><a data-toggle="modal" data-target="#foodDetailModal" href="#" class="btn btn-primary btn-modal-food" data-id="@item.food_id">Xem chi tiết</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="addFoodModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">THÊM MÓN ĂN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Create", "Foods"))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="col-md-12"><label class="labels">Tên món</label><input type="text" class="form-control" name="food_name"></div>
+                    <div class="col-md-12"><label class="labels">Giá</label><input type="text" class="form-control" name="food_price"></div>
+                    <div class="col-md-12"><label class="labels">Số lượng</label><input type="text" class="form-control" name="food_quantity"></div>
+                    <div class="col-md-12"><label class="labels">Hình ảnh</label><input type="file" class="form-control" id="validatedCustomFile" name="food_image"></div>
+                    <div class="col-md-12"><label class="labels">Đã bán</label><input type="text" class="form-control" name="food_served"></div>
+                    <div class="col-md-12"><label class="labels">Ghi chú</label><input type="text" class="form-control" name="food_note"></div>
+                    <div class="col-md-12"><label class="labels"></label><input hidden type="text" class="form-control" name="food_menu_id" value="@ViewBag.food_menu_id"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="foodDetailModal" tabindex="-1" role="dialog" aria-labelledby="foodModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="foodModalCenterTitle">MÓN</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Edit", "Foods"))
+            {
+                @Html.AntiForgeryToken()
+                <div class="modal-body" id="foodDetail">
+                    @*<div class="col-md-12"><label class="labels">Tên món</label><input type="text" class="form-control" name="restaurant_phone" value=""></div>
+                    <div class="col-md-12"><label class="labels">Giá</label><input type="text" class="form-control" name="restaurant_address" value=""></div>
+                    <div class="col-md-12"><label class="labels">Số lượng</label><input type="text" class="form-control" name="restaurant_email" value=""></div>
+                    <div class="col-md-12"><label class="labels">Hình ảnh</label><input type="file" class="form-control" id="validatedCustomFile" name="restaurant_image" value=""></div>
+                    <div class="col-md-12"><label class="labels">Đã bán</label><input type="text" class="form-control" id="validatedCustomFile" name="restaurant_image" value=""></div>
+                    <div class="col-md-12"><label class="labels">Ghi chú</label><input type="text" class="form-control" id="validatedCustomFile" name="restaurant_image" value=""></div>*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

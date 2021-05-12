@@ -1,0 +1,10 @@
+﻿@model Models.DBContext.Food
+
+@Html.HiddenFor(model => model.food_id)
+<div class="col-md-12"><label class="labels">Tên món</label><input type="text" class="form-control" name="food_name" value="@Model.food_name"></div>
+<div class="col-md-12"><label class="labels">Giá</label><input type="text" class="form-control" name="food_price" value="@Model.food_price"></div>
+<div class="col-md-12"><label class="labels">Số lượng</label><input type="text" class="form-control" name="food_quantity" value="@Model.food_quantity"></div>
+<div class="col-md-12"><label class="labels">Hình ảnh</label><input type="file" class="form-control" id="validatedCustomFile" name="food_image" value="@Model.food_image"></div>
+<div class="col-md-12"><label class="labels">Đã bán</label><input type="text" class="form-control" id="validatedCustomFile" name="food_served" value="@Model.food_served"></div>
+<div class="col-md-12"><label class="labels">Ghi chú</label><input type="text" class="form-control" id="validatedCustomFile" name="food_note" value="@Model.food_note"></div>
+<div class="col-md-12"><label class="labels"></label><input hidden type="text" class="form-control" name="food_menu_id" value="@Model.food_menu_id"></div>

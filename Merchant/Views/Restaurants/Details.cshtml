@@ -1,0 +1,106 @@
+﻿@model Models.DBContext.Restaurant
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Restaurant</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_image)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_image)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_start_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_start_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_end_time)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_end_time)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_longitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_longitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.restaurant_latitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.restaurant_latitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Restaurant_category.restaurant_category_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Restaurant_category.restaurant_category_name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.user_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.user_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.restaurant_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

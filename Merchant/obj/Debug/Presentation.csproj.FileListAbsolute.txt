@@ -1,0 +1,4 @@
+C:\Users\hanth\source\repos\Merchant\Merchant\obj\Debug\Presentation.csprojAssemblyReference.cache
+C:\Users\hanth\source\repos\Merchant\Merchant\obj\Debug\Presentation.csproj.CoreCompileInputs.cache
+C:\Users\hanth\source\repos\Merchant\Merchant\obj\Debug\Merchant.dll
+C:\Users\hanth\source\repos\Merchant\Merchant\obj\Debug\Merchant.pdb

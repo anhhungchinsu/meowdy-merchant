@@ -1,0 +1,83 @@
+﻿@model IEnumerable<Models.DBContext.Menu>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="modal fade" id="addMenuModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">THÊM MENU</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                @using (Html.BeginForm("Create", "Menus"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <div class="col-md-12"><label class="labels">Tên menu</label><input type="text" class="form-control" placeholder="Tên menu" name="menu_name"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="card col-3 ml-3">
+        <div class="card-header d-flex justify-content-between">
+            <h3>
+                <strong class="text-primary">MENU</strong>
+            </h3>
+            <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#addMenuModal">Thêm</a>
+        </div>
+        <div class="card-content">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Tên menu</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.menu_id</td>
+                            <td>@item.menu_name</td>
+                            <td class="text-right"><button data-id="@item.menu_id" class="btn btn-primary btn-show-foods">Xem chi tiết</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="listFoodView" class="card col-12 ml-3">
+
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $('.card-content').on('click', '.btn-show-foods', function () {
+            var url = '@Url.Action("ListFoodByMenu", "Foods")'
+            var menuId = $(this).data('id')
+            url += '/' + menuId
+            $('#listFoodView').load(url);
+        })
+
+        $('#listFoodView').on('click', '.btn-modal-food', function () {
+            const foodId = $(this).data('id')
+            var url = '@Url.Action("Details", "Foods")'
+            url += '/' + foodId
+            $('#foodDetail').load(url);
+        })
+    </script>
+}

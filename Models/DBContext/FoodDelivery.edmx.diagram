@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b0b8ffb07afa41b3a1773294d3945378" Name="Diagram1">
+        <EntityTypeShape EntityType="FoodDeliveryModel.Discount" Width="1.5" PointX="3" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Discount_detail" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Food" Width="1.5" PointX="12.75" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Menu" Width="1.5" PointX="10.5" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Order" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Order_detail" Width="1.5" PointX="15" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Restaurant" Width="1.5" PointX="8.25" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Restaurant_category" Width="1.5" PointX="6" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.Role" Width="1.5" PointX="0.75" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.sysdiagram" Width="1.5" PointX="7.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.User" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FoodDeliveryModel.User_order" Width="1.5" PointX="5.25" PointY="3.375" IsExpanded="true" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Discount_detail_Discount1" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Discount_detail_User" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Food_Menu" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Order_detail_Food" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Menu_Restaurant1" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Order_detail_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_User_order_Order" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Restaurant_Restaurant_category" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_Restaurant_User" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_User_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="FoodDeliveryModel.FK_User_order_User" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
