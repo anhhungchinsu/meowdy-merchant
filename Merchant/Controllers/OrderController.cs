@@ -1,5 +1,6 @@
 ﻿using Merchant.Hubs;
 using Merchant.Models;
+using Merchant.ViewModels;
 using Models.DBContext;
 using Newtonsoft.Json;
 using System;
@@ -86,6 +87,46 @@ namespace Merchant.Controllers
                 Order = JsonConvert.SerializeObject(Order),
                 listUser = JsonConvert.SerializeObject(listUser),
                 listFood = JsonConvert.SerializeObject(listFood)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getOrderByDate(DateTime? fromDate, DateTime? toDate)
+        {
+            var listOrder = db.Orders.Where(s => s.order_created_date >= fromDate && s.order_created_date <= toDate);
+            var listOrderSuccess = db.Orders.Where(s => s.order_status.Contains("Completed") && s.order_created_date >= fromDate && s.order_created_date <= toDate);
+            var listCanceled = db.Orders.Where(s => s.order_status.Contains("Order canceled") && s.order_created_date >= fromDate && s.order_created_date <= toDate);
+
+            return Json(new
+            {
+                listOrder = JsonConvert.SerializeObject(listOrder),
+                listOrderSuccess = JsonConvert.SerializeObject(listOrderSuccess),
+                listCanceled = JsonConvert.SerializeObject(listCanceled)
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult getListFoodByOrderDate(DateTime? fromDate, DateTime? toDate)
+        {
+            var listOrder = db.Orders.Where(s => s.order_created_date >= fromDate && s.order_created_date <= toDate);
+            List<FoodModel> list = new List<FoodModel>();
+            foreach(var item in listOrder)
+			{
+                var orderDetails = db.Order_detail.Where(x => x.Order_detail_order_id == item.order_id);
+                var foodName = db.Foods.Find(orderDetails.First().Order_detail_food_id).food_name;
+                var quantity = orderDetails.Sum(x => x.Order_detail_quantity);
+                var dateOrder = item.order_created_date;
+                FoodModel f = new FoodModel
+                {
+                    FoodName = foodName,
+                    Quantity = (int)quantity,
+                    DateOrder = (DateTime)dateOrder
+                };
+                list.Add(f);
+            }
+            return Json(new
+            {
+                listOrder = JsonConvert.SerializeObject(listOrder),
             }, JsonRequestBehavior.AllowGet);
         }
 

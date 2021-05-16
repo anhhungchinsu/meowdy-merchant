@@ -9,8 +9,8 @@
 
 namespace Models.DBContext
 {
-    using Newtonsoft.Json;
-    using System;
+	using Newtonsoft.Json;
+	using System;
     using System.Collections.Generic;
     
     public partial class Order
@@ -32,6 +32,7 @@ namespace Models.DBContext
         public string order_discount { get; set; }
         public string order_longitude { get; set; }
         public string order_latitude { get; set; }
+        public Nullable<decimal> order_total { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         [JsonIgnore]

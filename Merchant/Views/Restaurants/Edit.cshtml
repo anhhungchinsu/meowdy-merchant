@@ -30,12 +30,20 @@
                         <div class="col-md-12"><label class="labels">Hình ảnh</label><input type="file" class="form-control" id="validatedCustomFile" name="restaurant_image" value="@Model.restaurant_image"></div>
                         <div class="col-md-12">
                             <label class="labels">Loại nhà hàng</label><br />
-                            @Html.DropDownList("restaurant_category_id", new SelectList(ViewBag.restaurant_category_id, "Value", "Text"))
+                            @Html.DropDownList("restaurant_category_id")
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-md-6"><label class="labels">Giờ mở cửa</label><input type="text" class="form-control" placeholder="Giờ mở cửa" name="restaurant_start_time" value="@Model.restaurant_start_time"></div>
                         <div class="col-md-6"><label class="labels">Giờ đóng cửa</label><input type="text" class="form-control" placeholder="Giờ đóng cửa" name="restaurant_end_time" value="@Model.restaurant_end_time"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <p>Chọn vị trí nhà hàng</p>
+                        <div id="map"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6"><label class="labels">Latitude</label><input id="restaurant_latitude" type="text" class="form-control" name="restaurant_latitude" value="@Model.restaurant_latitude"></div>
+                        <div class="col-md-6"><label class="labels">Longitude</label><input id="restaurant_longitude" type="text" class="form-control" name="restaurant_longitude" value="@Model.restaurant_longitude"></div>
                     </div>
                     <div class="mt-5 text-center"><button class="btn btn-primary profile-button" type="submit">Lưu</button></div>
                 </div>
@@ -44,6 +52,25 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@section scripts {
+    <script type="text/javascript">
+        var map = L.map('map')
+        var marker
+        navigator.geolocation.getCurrentPosition(function (location) {
+            marker = L.latLng(location.coords.latitude, location.coords.longitude)
+            map.setView(marker, 15);
+            L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+            marker = L.marker(L.latLng(location.coords.latitude, location.coords.longitude)).addTo(map);
+        })
+        map.on('click', function (e) {
+            $('#restaurant_latitude').val(e.latlng.lat)
+            $('#restaurant_longitude').val(e.latlng.lng)
+            if (marker != undefined) {
+                map.removeLayer(marker);
+            }
+            marker = L.marker(e.latlng).addTo(map)
+        });
+    </script>
+}

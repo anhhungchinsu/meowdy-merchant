@@ -9,8 +9,8 @@
 
 namespace Models.DBContext
 {
-    using Newtonsoft.Json;
-    using System;
+	using Newtonsoft.Json;
+	using System;
     using System.Collections.Generic;
     
     public partial class Restaurant_category

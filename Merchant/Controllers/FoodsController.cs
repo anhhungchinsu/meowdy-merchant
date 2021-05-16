@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Models.DBContext;
+using Newtonsoft.Json;
 
 namespace Merchant.Controllers
 {
@@ -20,6 +21,15 @@ namespace Merchant.Controllers
             var foods = db.Foods.Where(x => x.food_menu_id == id);
             ViewBag.food_menu_id = id;
             return PartialView(foods.ToList());
+        }
+
+        public JsonResult ListFoodByMenu2(short id)
+        {
+            var listFood = db.Foods.Where(x => x.food_menu_id == id);
+            return Json(new
+            {
+                listFood = JsonConvert.SerializeObject(listFood)
+            }, JsonRequestBehavior.AllowGet);
         }
 
         // GET: Foods/Details/5
@@ -94,30 +104,14 @@ namespace Merchant.Controllers
             return RedirectToAction("Index", "Menus");
         }
 
-        // GET: Foods/Delete/5
-        public ActionResult Delete(short? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Food food = db.Foods.Find(id);
-            if (food == null)
-            {
-                return HttpNotFound();
-            }
-            return View(food);
-        }
-
         // POST: Foods/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(short id)
         {
             Food food = db.Foods.Find(id);
             db.Foods.Remove(food);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Menus");
         }
 
         protected override void Dispose(bool disposing)

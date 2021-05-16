@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FoodDeliveryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FoodDeliveryModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Discount">
           <Key>
             <PropertyRef Name="discount_id" />
@@ -60,6 +60,7 @@
           <Property Name="order_discount" Type="nvarchar" MaxLength="50" />
           <Property Name="order_longitude" Type="nvarchar(max)" />
           <Property Name="order_latitude" Type="nvarchar(max)" />
+          <Property Name="order_total" Type="decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Order_detail">
           <Key>
@@ -325,8 +326,7 @@
             <End Role="User" EntitySet="User" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FoodDeliveryModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -394,6 +394,7 @@
           <Property Name="order_latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Order_detail" Relationship="Self.FK_Order_detail_Order" FromRole="Order" ToRole="Order_detail" />
           <NavigationProperty Name="User_order" Relationship="Self.FK_User_order_Order" FromRole="Order" ToRole="User_order" />
+          <Property Name="order_total" Type="Decimal" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Order_detail">
           <Key>
@@ -508,7 +509,8 @@
         </Association>
         <Association Name="FK_Food_Menu">
           <End Role="Menu" Type="Self.Menu" Multiplicity="0..1" />
-          <End Role="Food" Type="Self.Food" Multiplicity="*" />
+          <End Role="Food" Type="Self.Food" Multiplicity="*" >
+          </End>
           <ReferentialConstraint>
             <Principal Role="Menu">
               <PropertyRef Name="menu_id" />
@@ -725,6 +727,7 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="FoodDeliveryModel.Order">
               <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="order_total" ColumnName="order_total" />
                 <ScalarProperty Name="order_id" ColumnName="order_id" />
                 <ScalarProperty Name="order_created_date" ColumnName="order_created_date" />
                 <ScalarProperty Name="order_status" ColumnName="order_status" />

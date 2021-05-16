@@ -97,24 +97,8 @@ namespace Merchant.Controllers
             return View(menu);
         }
 
-        // GET: Menus/Delete/5
-        public ActionResult Delete(short? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Menu menu = db.Menus.Find(id);
-            if (menu == null)
-            {
-                return HttpNotFound();
-            }
-            return View(menu);
-        }
-
         // POST: Menus/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(short id)
         {
             Menu menu = db.Menus.Find(id);

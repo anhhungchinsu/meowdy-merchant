@@ -55,6 +55,7 @@
     <Property Name="order_discount" Type="nvarchar" MaxLength="50" />
     <Property Name="order_longitude" Type="nvarchar(max)" />
     <Property Name="order_latitude" Type="nvarchar(max)" />
+    <Property Name="order_total" Type="decimal" Precision="18" Scale="0" />
   </EntityType>
   <EntityType Name="Order_detail">
     <Key>

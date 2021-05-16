@@ -64,6 +64,7 @@
     <Property Name="order_latitude" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Order_detail" Relationship="Self.FK_Order_detail_Order" FromRole="Order" ToRole="Order_detail" />
     <NavigationProperty Name="User_order" Relationship="Self.FK_User_order_Order" FromRole="Order" ToRole="User_order" />
+    <Property Name="order_total" Type="Decimal" Precision="18" Scale="0" />
   </EntityType>
   <EntityType Name="Order_detail">
     <Key>
