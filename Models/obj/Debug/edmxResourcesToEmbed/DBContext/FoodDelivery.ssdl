@@ -46,7 +46,7 @@
       <PropertyRef Name="order_id" />
     </Key>
     <Property Name="order_id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="order_created_date" Type="datetime" />
+    <Property Name="order_created_date" Type="date" />
     <Property Name="order_status" Type="nvarchar" MaxLength="50" />
     <Property Name="order_note" Type="nvarchar(max)" />
     <Property Name="order_payment_method" Type="nvarchar" MaxLength="50" />

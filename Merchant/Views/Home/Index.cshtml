@@ -1,71 +1,28 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
 <div class="row">
-    <div class="col-3 col-m-6 col-sm-6">
-        <div class="counter bg-primary">
-            <p>
-                <i class="fas fa-tasks"></i>
-            </p>
-            <h3>100+</h3>
-            <p>To do</p>
-        </div>
-    </div>
-    <div class="col-3 col-m-6 col-sm-6">
-        <div class="counter bg-warning">
-            <p>
-                <i class="fas fa-spinner"></i>
-            </p>
-            <h3>100+</h3>
-            <p>In progress</p>
-        </div>
-    </div>
-    <div class="col-3 col-m-6 col-sm-6">
-        <div class="counter bg-success">
-            <p>
-                <i class="fas fa-check-circle"></i>
-            </p>
-            <h3>100+</h3>
-            <p>Completed</p>
-        </div>
-    </div>
-    <div class="col-3 col-m-6 col-sm-6">
-        <div class="counter bg-danger">
-            <p>
-                <i class="fas fa-bug"></i>
-            </p>
-            <h3>100+</h3>
-            <p>Issues</p>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-4 col-m-6 col-sm-6">
-        <div class="card">
-            <div class="card-header">
-                <h3>
-                    ĐƠN THÀNH CÔNG/ĐƠN HỦY
-                </h3>
-                <div class="row">
-                    <div class="col-4 mr-2">Từ ngày</div>
-                    <div class="col-4">Đến ngày</div>
-                    <input id="successAndPendingFromDate" class="col-4 mr-2" type="date"/>
-                    <input id="successAndPendingToDate" class="col-4" type="date"/>
-                    <button id="successAndPendingBtn" class="col-2 btn btn-primary ml-3">Chọn</button>
-                </div>
-            </div>
-            <div class="card-content">
-                <canvas id="successAndPendingChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-	<div class="col-12">
+	<div class="col-4">
 		<div class="card">
+			<div class="card-header">
+				<h3>
+					ĐƠN THÀNH CÔNG/ĐƠN HỦY
+				</h3>
+				<div class="row">
+					<div class="col-4 mr-2">Từ ngày</div>
+					<div class="col-4">Đến ngày</div>
+					<input id="successAndPendingFromDate" class="col-4 mr-2" type="date" />
+					<input id="successAndPendingToDate" class="col-4" type="date" />
+					<button id="successAndPendingBtn" class="col-2 btn btn-primary ml-3">Chọn</button>
+				</div>
+			</div>
+			<div class="card-content">
+				<canvas id="successAndPendingChart"></canvas>
+			</div>
+		</div>
+	</div>
+	<div class="col-8">
+		<div class="card h-100">
 			<div class="card-header">
 				<h3>
 					DOANH THU THEO NGÀY
@@ -85,8 +42,31 @@
 	</div>
 </div>
 
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<h3>
+					SỐ LƯỢNG MÓN ĐƯỢC BÁN TRONG NGÀY
+				</h3>
+				<div class="row">
+					<div class="col-4 mr-2">Từ ngày</div>
+					<div class="col-4">Đến ngày</div>
+					<input id="listFoodByOrderDateFromDate" class="col-4 mr-2" type="date" />
+					<input id="listFoodByOrderDateToDate" class="col-4" type="date" />
+					<button id="listFoodByOrderDateBtn" class="col-2 btn btn-primary ml-3">Chọn</button>
+				</div>
+			</div>
+			<div class="card-content">
+				<canvas id="listFoodByOrderDateChart"></canvas>
+			</div>
+		</div>
+	</div>
+</div>
+
 @section scripts {
-    <script type="text/javascript">
+	<script type="text/javascript">
 
 		var getDaysArray = function (start, end) {
 			for (var arr = [], dt = new Date(start); dt <= end; dt.setDate(dt.getDate() + 1)) {
@@ -136,11 +116,6 @@
 		})
 		$('#successAndPendingBtn').on('click', function () {
 			getDataSuccessAndPending($('#successAndPendingFromDate').val(), $('#successAndPendingToDate').val()).done(function (data) {
-				//let listOrder = JSON.parse(data.listOrder)
-				//let listOrderSuccess = JSON.parse(data.listOrderSuccess)
-				//let listCanceled = JSON.parse(data.listCanceled)
-				//myChart.data.datasets[0].data = [listOrder.length, listOrderSuccess.length, listCanceled.length]
-				//myChart.update()
 				successAndPendingChart.destroy()
 				initSuccessAndPending(data)
 			})
@@ -187,7 +162,6 @@
 				options: {
 					responsive: true,
 					maintainAspectRatio: false,
-
 				}
 			};
 			incomeChart = new Chart(
@@ -205,7 +179,7 @@
 			})
 		})
 
-
+		//Dung chung cho 2 chart income va SuccessAndPending
         function getDataSuccessAndPending(fromDate, toDate) {
             return $.ajax({
                 url: '@Url.Action("getOrderByDate", "Order")',
@@ -220,7 +194,93 @@
             })
         }
 
-        
-        
-    </script>
+		/*---------------------------------------------------------------------------------------------------------------------------------------*/
+		var listFoodByOrderDateChart
+		function initListFoodByOrderDate(response) {
+			const listFoodByOrderDate = JSON.parse(response.listOrderByDate)
+			const dayList = getDaysArray(new Date($('#listFoodByOrderDateFromDate').val()), new Date($('#listFoodByOrderDateToDate').val()))
+
+			const labels = []
+			
+			const datas = []
+			dayList.map((v) => {
+				v = v.toISOString().slice(0, 10)
+				labels.push(v)
+
+				let data = { x: v}
+
+				let ar = listFoodByOrderDate.filter(e => new Date(e.DateOrder).toISOString().slice(0, 10) === v)
+
+				for (let item of ar) {
+					data[item.FoodName] = item.Quantity
+				}
+				datas.push(data)
+			})
+
+			let datasets = []
+			for (var item of listFoodByOrderDate) {
+				let dataset = {
+					label: item.FoodName,
+					data: datas,
+					backgroundColor: dynamicColors,
+					parsing: {
+						yAxisKey: item.FoodName
+					}
+				}
+				datasets.push(dataset)
+			}
+			datasets = datasets.filter((v, i, a) => a.findIndex(t => (t.label === v.label)) === i)
+
+			console.log(datasets);
+
+			const dataChart = {
+				labels: labels,
+				datasets: datasets
+			}
+			const configFoodByOrderDateChart = {
+				type: 'bar',
+				data: dataChart,
+				options: {
+					responsive: true,
+					maintainAspectRatio: true,
+					barValueSpacing: 20,
+					scales: {
+						yAxes: [{
+							ticks: {
+								min: 0,
+							}
+						}]
+					}
+				}
+			};
+			listFoodByOrderDateChart = new Chart(
+				document.getElementById('listFoodByOrderDateChart'),
+				configFoodByOrderDateChart
+			)
+		}
+		getListFoodByOrderDate('2021-05-03', '2021-05-05').done(function (data) {
+			initListFoodByOrderDate(data)
+		})
+		$('#listFoodByOrderDateBtn').on('click', function () {
+			getListFoodByOrderDate($('#listFoodByOrderDateFromDate').val(), $('#listFoodByOrderDateToDate').val()).done(function (data) {
+				listFoodByOrderDateChart.destroy()
+				initListFoodByOrderDate(data)
+			})
+		})
+
+
+		function getListFoodByOrderDate(fromDate, toDate) {
+            return $.ajax({
+                url: '@Url.Action("getListFoodByOrderDate", "Order")',
+                type: 'GET',
+                contentType: 'application/json;charset=utf-8',
+                data: {
+					fromDate: fromDate,
+					toDate: toDate
+                },
+				success: function (data) {
+                }
+            })
+		}
+	</script>
 }

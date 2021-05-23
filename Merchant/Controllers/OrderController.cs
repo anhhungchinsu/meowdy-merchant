@@ -105,32 +105,27 @@ namespace Merchant.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpGet]
-        public JsonResult getListFoodByOrderDate(DateTime? fromDate, DateTime? toDate)
-        {
-            var listOrder = db.Orders.Where(s => s.order_created_date >= fromDate && s.order_created_date <= toDate);
-            List<FoodModel> list = new List<FoodModel>();
-            foreach(var item in listOrder)
+		[HttpGet]
+		public JsonResult getListFoodByOrderDate(DateTime? fromDate, DateTime? toDate)
+		{
+            var list = from od in db.Order_detail
+                       join o in db.Orders on od.Order_detail_order_id equals o.order_id
+                       join f in db.Foods on od.Order_detail_food_id equals f.food_id
+                       where o.order_created_date >= fromDate && o.order_created_date <= toDate
+                       group od by new { f.food_name, o.order_created_date } into grouped
+                       select new FoodModel
+                       {
+                           FoodName = grouped.Key.food_name,
+                           DateOrder = (DateTime)grouped.Key.order_created_date,
+                           Quantity = (short)grouped.Sum(p => p.Order_detail_quantity)
+                       };
+			return Json(new
 			{
-                var orderDetails = db.Order_detail.Where(x => x.Order_detail_order_id == item.order_id);
-                var foodName = db.Foods.Find(orderDetails.First().Order_detail_food_id).food_name;
-                var quantity = orderDetails.Sum(x => x.Order_detail_quantity);
-                var dateOrder = item.order_created_date;
-                FoodModel f = new FoodModel
-                {
-                    FoodName = foodName,
-                    Quantity = (int)quantity,
-                    DateOrder = (DateTime)dateOrder
-                };
-                list.Add(f);
-            }
-            return Json(new
-            {
-                listOrder = JsonConvert.SerializeObject(listOrder),
-            }, JsonRequestBehavior.AllowGet);
-        }
+				listOrderByDate = JsonConvert.SerializeObject(list),
+			}, JsonRequestBehavior.AllowGet);
+		}
 
-        [HttpPost]
+		[HttpPost]
         public void changeStatus(short id ,string status)
         {
             var order = db.Orders.Find(id);

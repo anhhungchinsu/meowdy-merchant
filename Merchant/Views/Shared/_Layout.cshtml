@@ -178,19 +178,19 @@
 
     <script type="text/javascript">
         var order
-        //$(document).ready(function () {
-        //    order = order || $.connection.orderHub
+        $(document).ready(function () {
+            order = order || $.connection.orderHub
 
-        //    order.client.displayOrder = function () {
-        //        getData()
-        //    }
-        //    $.connection.hub.start()
-        //    getData()
-        //})
+            order.client.displayOrder = function () {
+                getData()
+            }
+            $.connection.hub.start()
+            getData()
+        })
 
-        //$('#label-notification').on('click', () => {
-        //    $("#badge-notification").attr("hidden", true)
-        //})
+        $('#label-notification').on('click', () => {
+            $("#badge-notification").attr("hidden", true)
+        })
 
         function getData() {
             $.ajax({

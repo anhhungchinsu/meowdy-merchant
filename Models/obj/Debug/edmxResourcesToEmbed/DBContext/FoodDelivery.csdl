@@ -53,7 +53,7 @@
       <PropertyRef Name="order_id" />
     </Key>
     <Property Name="order_id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="order_created_date" Type="DateTime" Precision="3" />
+    <Property Name="order_created_date" Type="DateTime" Precision="0" />
     <Property Name="order_status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="order_note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="order_payment_method" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
