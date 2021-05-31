@@ -93,9 +93,11 @@ namespace Merchant.Controllers
         [HttpGet]
         public JsonResult getOrderByDate(DateTime? fromDate, DateTime? toDate)
         {
-            var listOrder = db.Orders.Where(s => s.order_created_date >= fromDate && s.order_created_date <= toDate);
-            var listOrderSuccess = db.Orders.Where(s => s.order_status.Contains("Completed") && s.order_created_date >= fromDate && s.order_created_date <= toDate);
-            var listCanceled = db.Orders.Where(s => s.order_status.Contains("Order canceled") && s.order_created_date >= fromDate && s.order_created_date <= toDate);
+            short userId = (short)Session["userId"];
+            var list = db.Orders.Where(x => x.User_order.Any(y => y.user_id == userId));
+            var listOrder = list.Where(s => s.order_created_date >= fromDate && s.order_created_date <= toDate);
+            var listOrderSuccess = list.Where(s => s.order_status.Contains("Completed") && s.order_created_date >= fromDate && s.order_created_date <= toDate);
+            var listCanceled = list.Where(s => s.order_status.Contains("Order canceled") && s.order_created_date >= fromDate && s.order_created_date <= toDate);
 
             return Json(new
             {
@@ -108,8 +110,10 @@ namespace Merchant.Controllers
 		[HttpGet]
 		public JsonResult getListFoodByOrderDate(DateTime? fromDate, DateTime? toDate)
 		{
-            var list = from od in db.Order_detail
-                       join o in db.Orders on od.Order_detail_order_id equals o.order_id
+            short userId = (short)Session["userId"];
+            var list = db.Orders.Where(x => x.User_order.Any(y => y.user_id == userId));
+            var listOrder = from od in db.Order_detail
+                       join o in list on od.Order_detail_order_id equals o.order_id
                        join f in db.Foods on od.Order_detail_food_id equals f.food_id
                        where o.order_created_date >= fromDate && o.order_created_date <= toDate
                        group od by new { f.food_name, o.order_created_date } into grouped
@@ -121,7 +125,7 @@ namespace Merchant.Controllers
                        };
 			return Json(new
 			{
-				listOrderByDate = JsonConvert.SerializeObject(list),
+				listOrderByDate = JsonConvert.SerializeObject(listOrder),
 			}, JsonRequestBehavior.AllowGet);
 		}
 
